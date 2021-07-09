@@ -1,0 +1,334 @@
+#VRML_SIM R2021a utf8
+WorldInfo {
+  coordinateSystem "NUE"
+  contactProperties [
+    ContactProperties {
+      material1 "grip"
+      material2 "obj"
+      coulombFriction [
+        10
+      ]
+    }
+  ]
+}
+Viewpoint {
+  orientation -0.010296026487488062 0.8446783643500445 0.535175160706756 3.0977138399004773
+  position 0.04895703510722821 2.9303539159956244 -1.3170125570453382
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  translation 0 -0.04 0
+  floorSize 2 2
+  floorTileSize 0.25 0.25
+}
+Robot {
+  children [
+    Solid {
+      translation 0 0 0.105
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.4 0.2 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.06 0.02 0.01
+          }
+        }
+      ]
+      name "solid(3)"
+    }
+    SliderJoint {
+      jointParameters JointParameters {
+        axis 1 0 0
+      }
+      device [
+        LinearMotor {
+          name "claw1"
+          maxPosition 0.04
+        }
+      ]
+      endPoint Solid {
+        translation -0.02 0 0.13
+        children [
+          DEF claw1 Shape {
+            appearance PBRAppearance {
+              baseColor 1 1 0
+              metalness 0
+            }
+            geometry Box {
+              size 0.01 0.02 0.04
+            }
+          }
+        ]
+        name "solid(4)"
+        contactMaterial "grip"
+        boundingObject USE claw1
+        physics Physics {
+        }
+      }
+    }
+    SliderJoint {
+      jointParameters JointParameters {
+        axis 1 0 0
+      }
+      device [
+        LinearMotor {
+          name "claw2"
+          minPosition -0.04
+        }
+      ]
+      endPoint Solid {
+        translation 0.02 0 0.13
+        children [
+          DEF claw2 Shape {
+            appearance PBRAppearance {
+              baseColor 1 1 0
+              metalness 0
+            }
+            geometry Box {
+              size 0.01 0.02 0.04
+            }
+          }
+        ]
+        name "solid(5)"
+        contactMaterial "grip"
+        boundingObject USE claw2
+        physics Physics {
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor 0.06 0 0.05
+      }
+      device [
+        RotationalMotor {
+          name "wheel1"
+        }
+      ]
+      endPoint Solid {
+        translation 0.06 0 0.05
+        rotation 0 0 1 1.57
+        children [
+          DEF Wheel Shape {
+            appearance PBRAppearance {
+              baseColor 1 0 0
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.02
+              radius 0.04
+            }
+          }
+        ]
+        name "wheel_1"
+        boundingObject USE Wheel
+        physics DEF Physics_WH Physics {
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor 0.06 0 -0.05
+      }
+      device [
+        RotationalMotor {
+          name "wheel2"
+        }
+      ]
+      endPoint Solid {
+        translation 0.06 0 -0.05
+        rotation 0 0 1 1.57
+        children [
+          USE Wheel
+        ]
+        boundingObject USE Wheel
+        physics USE Physics_WH
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor -0.06 0 0.05
+      }
+      device [
+        RotationalMotor {
+          name "wheel3"
+        }
+      ]
+      endPoint Solid {
+        translation -0.06 0 0.05
+        rotation 0 0 1 1.57
+        children [
+          USE Wheel
+        ]
+        name "solid(1)"
+        boundingObject USE Wheel
+        physics USE Physics_WH
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor -0.06 0 -0.05
+      }
+      device [
+        RotationalMotor {
+          name "wheel4"
+        }
+      ]
+      endPoint Solid {
+        translation -0.06 0 -0.05
+        rotation 0 0 1 1.57
+        children [
+          USE Wheel
+        ]
+        name "solid(2)"
+      }
+    }
+    DistanceSensor {
+      translation 0 -0.02 0.1
+      rotation 0 1 0 -1.57
+      children [
+        DEF sensor Shape {
+          appearance PBRAppearance {
+            baseColor 0 1 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "ds"
+      boundingObject USE sensor
+      physics Physics {
+      }
+      lookupTable [
+        0 0 0
+        0.2 2000 0
+      ]
+    }
+    GPS {
+      translation 0 0.03 0
+      children [
+        DEF gps_shape Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+          }
+          geometry Box {
+            size 0.04 0.02 0.04
+          }
+        }
+      ]
+      name "global"
+      boundingObject USE gps_shape
+      physics Physics {
+      }
+    }
+    DEF BODY Shape {
+      appearance PBRAppearance {
+        baseColor 0 1 0
+        metalness 0
+      }
+      geometry Box {
+        size 0.1 0.05 0.2
+      }
+    }
+  ]
+  boundingObject USE BODY
+  physics Physics {
+  }
+  controller "controller"
+}
+DEF object Solid {
+  translation -0.37 -0.01 -0.3
+  children [
+    DEF obj_body Shape {
+      appearance PBRAppearance {
+        metalness 0
+      }
+      geometry Box {
+        size 0.02 0.06 0.06
+      }
+    }
+  ]
+  contactMaterial "obj"
+  boundingObject USE obj_body
+  physics Physics {
+  }
+}
+DEF object Solid {
+  translation 0.4 -0.01 -0.48
+  children [
+    DEF obj_body Shape {
+      appearance PBRAppearance {
+        metalness 0
+      }
+      geometry Box {
+        size 0.02 0.06 0.06
+      }
+    }
+  ]
+  name "solid(3)"
+  contactMaterial "obj"
+  boundingObject USE obj_body
+  physics Physics {
+  }
+}
+DEF object Solid {
+  translation -0.4 -0.01 0.54
+  children [
+    DEF obj_body Shape {
+      appearance PBRAppearance {
+        metalness 0
+      }
+      geometry Box {
+        size 0.02 0.06 0.06
+      }
+    }
+  ]
+  name "solid(1)"
+  contactMaterial "obj"
+  boundingObject USE obj_body
+  physics Physics {
+  }
+}
+DEF object Solid {
+  translation -0.2 -0.01 0.31
+  children [
+    DEF obj_body Shape {
+      appearance PBRAppearance {
+        metalness 0
+      }
+      geometry Box {
+        size 0.02 0.06 0.06
+      }
+    }
+  ]
+  name "solid(4)"
+  contactMaterial "obj"
+  boundingObject USE obj_body
+  physics Physics {
+  }
+}
+DEF object Solid {
+  translation 0.4 -0.01 0.54
+  children [
+    DEF obj_body Shape {
+      appearance PBRAppearance {
+        metalness 0
+      }
+      geometry Box {
+        size 0.02 0.06 0.06
+      }
+    }
+  ]
+  name "solid(2)"
+  contactMaterial "obj"
+  boundingObject USE obj_body
+  physics Physics {
+  }
+}
